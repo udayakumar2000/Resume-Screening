@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Resume Screening</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f5f5f5;
+		}
+
+		h1 {
+			text-align: center;
+			color: #333;
+			margin-top: 30px;
+			margin-bottom: 20px;
+		}
+
+		form {
+			background-color: #fff;
+			padding: 20px;
+			margin: 0 auto;
+			max-width: 600px;
+			border-radius: 5px;
+			box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+			color: #333;
+		}
+
+		input[type="file"] {
+			margin-bottom: 20px;
+		}
+
+		input[type="submit"] {
+			background-color: #333;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		table {
+			margin-top: 30px;
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		th, td {
+			padding: 10px;
+			text-align: left;
+			border: 1px solid #ddd;
+		}
+
+		th {
+			background-color: #333;
+			color: #fff;
+		}
+	</style>
+</head>
+<body>
+	<h1>Resume Screening</h1>
+	<form action="/predict" method="post" enctype="multipart/form-data">
+		<label for="job_description">Key Skills or Job Description:</label>
+		<textarea id="job_description" name="job_description" rows="10" cols="50"></textarea><br><br>
+		<label for="resume">Upload Resume Files:</label>
+		<input type="file" name="file" multiple><br><br>
+		<input type="submit" value="Submit">
+	</form>
+	{% if results %}
+		<h2>Result:</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Job Category</th>
+					<th>Score</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for result in results %}
+				<tr>
+					<td>{{ result.name }}</td>
+					<td>{{ result.email }}</td>
+					<td>{{ result.prediction }}</td>
+					<td>{{ "%.2f" % result.cos_sim_scores }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+</body>
+</html>
